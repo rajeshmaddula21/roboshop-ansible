@@ -5,6 +5,7 @@
    sg_id: sg-02e4ac8f46d708889
    ami_id: ami-0220d79f3f480ecf5
    enivron: dev
+   domain_name: techadd.site
    instances:
    - mongodb
    - catalogue
@@ -26,3 +27,13 @@
    - name: print the output
      ansible.builtin.debug:
        msg: " {{ ec2_output }}"
+
+   - name: create route 53 records
+     amazon.aws.route53:
+     state: present
+     zone: "{{ domain_name }}"
+     record: new.foo.com
+     type: A
+     ttl: 1
+     value: 1
+     wait: true
